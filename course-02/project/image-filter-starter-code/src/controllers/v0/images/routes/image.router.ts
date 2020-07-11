@@ -6,9 +6,12 @@ const router: Router = Router();
 
 router.get( "/filteredimage", 
     requireAuth,
-    async ( req, res ) => {
+    async ( req: Request, res: Response ) => {
         const imageUrl = req.query.image_url;
         console.log('Requested url:', imageUrl);
+
+        if(typeof imageUrl==='undefined' || !imageUrl.trim())
+            res.status(400).send(`Missing parameter: image_url`);
 
         let filepath = await filterImageFromURL(imageUrl);
         console.log("FILEPATH: ", filepath);
